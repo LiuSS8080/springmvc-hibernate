@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		showAll();
+		function showAll(){
+			$.ajax({
+				type:"get",
+				url:"dept",
+				success:function(data){
+					$.each(data,function(index,dept){
+						item = "<tr><th>" + dept.deptno + "</th><th>" + dept.dname + "</th><th>" + dept.loc + "</th>";
+						item = item + "<th><button class='delete' id="+dept.deptno+">删除</button></th>";
+						item = item + "<th><button class='upd' value="+dept.deptno+">修改</button></th>";
+						item = item + "</tr>";
+						$("tbody").append(item);
+					});
+					del();
+					upd();
+				}
+			});
+		};
+		function del(){
+			$(".delete").click(function(){
+				$.ajax({
+					type:"post",
+					url:"dept",
+					data:{"deptno":$(this).attr("id"),"_method":"delete"},
+					success:function(data){
+						alert(data);
+						location.reload();
+					}
+				})
+			});
+		};
+		function upd(){
+			$(".upd").click(function(){
+				var deptno = $(this).attr("value");
+				$.ajax({
+					type:"get",
+					url:"deptupd.html",
+					success:function(data){
+						$("#outer").html(data);
+						findOne(deptno);
+					}
+				})
+			});
+		};
+		function findOne(arg){
+			$.ajax({
+				type : "get",
+				url : "dept/"+arg,
+				success : function(data) {
+					$("#deptno").val(data.deptno);
+					$("#dname").val(data.dname);
+					$("#loc").val(data.loc);
+				}
+			});
+		}
+		
+	})
+</script>
+</head>
+<body>
+<div id="outer">
+	<div style="width: 800px; margin: 30px auto; text-align: center;">
+		<h2>部门表</h2>
+	</div>
+	<div style="width: 800px; margin: 30px auto; text-align: right;">
+		<button id="add-btn" onclick="location.href='deptadd.html'">增加</button>
+	</div>
+	<table border="1" style="width:800px;margin:30px auto">
+		<thead>
+			<tr>
+				<th>部门序号</th>
+				<th>部门名称</th>
+				<th>部门地点</th>
+				<th>删除</th>
+				<th>修改</th>
+			</tr>
+		</thead>
+		<tbody>
+		
+		</tbody>
+		
+	</table>
+	</div>
+</body>
+</html>

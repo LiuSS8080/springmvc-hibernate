@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	$("#upd-btn").click(function(){
+		var deptno = $("#deptno").val();
+		var dname = $("#dname").val();
+		var loc = $("#loc").val();
+		$.ajax({
+				type:"post",
+				url:"dept",
+				data:{"deptno":deptno,"dname":dname,"loc":loc,"_method":"put"},
+				success:function(data){
+					alert(data);
+					location.reload();
+				}
+			})
+	})
+</script>
+</head>
+<body>
+	<div style="width: 800px; margin: 30px auto; text-align: center;">
+		<h2>增加部门</h2>
+		<form action="dept" method="post" id="updform">
+			部门id：<input name="deptno" id="deptno"/> <br/>
+			部门名称：<input name="dname" id="dname"/> <br/>
+			部门地点：<input name="loc" id="loc"/> <br/>
+			<button type="button" id="upd-btn">提交</button>
+		</form>
+	</div>
+	
+	
+</body>
+</html>
